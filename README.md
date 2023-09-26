@@ -28,22 +28,24 @@ $method = $_SERVER['REQUEST_METHOD'];
 ```
 If you prefer defining your routes directly in the index.php file:
 ```php
-$router = new Router()
+$router = new Router();
 //add you routes here
-$router->resolveRoute($route, $method);
+$router->resolveRoute();
 ```
+The resolveRoute() method will return true if a route is found and false if no route is found. You can use this to display a 404 page if no route is found:
+
 #### Using a separate route file
 To use a separate file for route definitions, include the following code in your index.php file:]
 ```php
 require 'filepathOfTheRouteFile.php';
-$router->resolveRoute($route, $method);
+$router->resolveRoute();
 
 ```
 The route file should resemble this:
 ```php
 <?php
 use Kyrill\PhpRoute\Router;
-$router = new Router()
+$router = new Router();
 //add you routes here
 ```
 

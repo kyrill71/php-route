@@ -1,20 +1,26 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Kyrill\PhpRoute;
 
 class Router
 {
     public array $routes;
+
     public function addRoute(string $method, string $route, array|callable $action): self
     {
         $this->routes[$this->generateRouteName($method, $route)] = new Route($method, $route, $action);
+
         return $this;
     }
-    public function resolveRoute(string $method, string $route): bool
+
+    public function resolveRoute(): bool
     {
+        $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $method = $_SERVER['REQUEST_METHOD'];
         $routeName = $this->generateRouteName($method, $route);
-        if (!array_key_exists($routeName, $this->routes)) {
+        if (! array_key_exists($routeName, $this->routes)) {
             return false;
         }
 
@@ -22,11 +28,13 @@ class Router
 
         if (is_callable($route->getAction())) {
             $this->handleCallable($route);
+
             return true;
         }
 
         if (is_array($route->getAction())) {
             $this->handleArray($route);
+
             return true;
         }
 
@@ -41,13 +49,15 @@ class Router
     private function handleArray(Route $route): void
     {
         [$controllerName, $methodName] = $route->getAction();
-        if (!class_exists($controllerName)) {
+        if (! class_exists($controllerName)) {
             throw new \RuntimeException("Controller $controllerName does not exist");
+
             return;
         }
 
-        if (!method_exists($controllerName, $methodName)) {
+        if (! method_exists($controllerName, $methodName)) {
             throw new \RuntimeException("Method $methodName does not exist in $controllerName");
+
             return;
         }
 
@@ -57,6 +67,6 @@ class Router
 
     private function generateRouteName(string $method, string $route): string
     {
-        return sprintf("%s_%s", $method, $route);
+        return sprintf('%s_%s', $method, $route);
     }
 }
