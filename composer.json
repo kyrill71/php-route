@@ -1,10 +1,10 @@
 {
-    "name": "kyril/php-route",
+    "name": "kyrill/php-route",
     "description": "A router package in development",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Kyril\\PhpRoute\\": "src/"
+            "Kyrill\\PhpRoute\\": "src/"
         }
     },
     "authors": [
