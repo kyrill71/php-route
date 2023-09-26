@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Kyril\PhpRoute;
+namespace Kyrill\PhpRoute;
 
 class Router
 {
