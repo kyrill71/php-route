@@ -1,0 +1,21 @@
+{
+    "name": "kyril/php-route",
+    "description": "A router package in development",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Kyril\\PhpRoute\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kyrill van Fessem",
+            "email": "kyrill.van.fessem@maxserv.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.2"
+    }
+
+}
