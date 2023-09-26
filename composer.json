@@ -1,5 +1,5 @@
 {
-    "name": "kyril/php-route",
+    "name": "kyrill/php-route",
     "description": "A router package in development",
     "license": "MIT",
     "autoload": {
