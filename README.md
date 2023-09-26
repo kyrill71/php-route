@@ -11,7 +11,7 @@
 On the index.php put the following code:
 ```php
 <?php
-use Kyril\PhpRoute\Router; //use this line if you want to define te routes in the index.php file
+use Kyrill\PhpRoute\Router; //use this line if you want to define te routes in the index.php file
 require 'vendor/autoload.php';
 
 $route = $_SERVER['REQUEST_URI'];
@@ -34,7 +34,7 @@ $router->resolveRoute($route, $method);
 The route file should look like this:
 ```php
 <?php
-use Kyril\PhpRoute\Router;
+use Kyrill\PhpRoute\Router;
 $router = new Router()
 //add you routes here
 ```
