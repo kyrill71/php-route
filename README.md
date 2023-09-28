@@ -22,8 +22,6 @@ In your index.php file, include the following code to set up the routing system:
 use Kyrill\PhpRoute\Router; //use this line if you want to define te routes in the index.php file
 require 'vendor/autoload.php';
 
-$route = $_SERVER['REQUEST_URI'];
-$method = $_SERVER['REQUEST_METHOD'];
 
 ```
 If you prefer defining your routes directly in the index.php file:
