@@ -22,12 +22,6 @@ In your index.php file, include the following code is required for the package t
 require 'vendor/autoload.php';
 
 ```
-If you prefer defining your routes directly in the index.php file:
-```php
-$router = new Router();
-//add you routes here
-$router->resolveRoute();
-```
 
 #### In the file where you want to use the routing
 To use the file for route definitions, include the following code in your routering file:
