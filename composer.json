@@ -16,8 +16,5 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=8.2"
-    },
-    "require-dev": {
-        "laravel/pint": "dev-main"
     }
 }
