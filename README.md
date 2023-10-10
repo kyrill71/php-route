@@ -15,15 +15,11 @@ Ensure your ``composer.json file has the minimum-stability set to "dev":
 ```json
 "minimum-stability": "dev"
 ```
-### Using the index.php file
-In your index.php file, include the following code to set up the routing system:
+
+In your index.php file, include the following code is required for the package to work:
 ```php
 <?php
-use Kyrill\PhpRoute\Router; //use this line if you want to define te routes in the index.php file
 require 'vendor/autoload.php';
-
-$route = $_SERVER['REQUEST_URI'];
-$method = $_SERVER['REQUEST_METHOD'];
 
 ```
 If you prefer defining your routes directly in the index.php file:
@@ -32,28 +28,24 @@ $router = new Router();
 //add you routes here
 $router->resolveRoute();
 ```
-The resolveRoute() method will return true if a route is found and false if no route is found. You can use this to display a 404 page if no route is found:
 
-#### Using a separate route file
-To use a separate file for route definitions, include the following code in your index.php file:]
-```php
-require 'filepathOfTheRouteFile.php';
-$router->resolveRoute();
-
-```
-The route file should resemble this:
+#### In the file where you want to use the routing
+To use the file for route definitions, include the following code in your routering file:
 ```php
 <?php
 use Kyrill\PhpRoute\Router;
-$router = new Router();
-//add you routes here
+$router = new Router(); // add an instance of the Router
+
+$router->resolveRoute();// resolves all the requests
+
 ```
+The resolveRoute() method will return true if a route is found and false if no route is found. You can use this to display a 404 page if no route is found:
 
 
 ### Basic usage
 You can add routes to a controller like this:
 ```php
-$route->addRoute('GET', '/home', [Controller::class, 'home']);
+$router->addRoute('GET', '/home', [Controller::class, 'home']);
 ```
 You can also use functions as route handlers:
 ```php
@@ -72,5 +64,14 @@ $router->addRoute('GET','/anonymousfunction', function () {
 ```
 In these examples, we use the GET method, but you can use any HTTP method you need for your routes.
 
+You can also use parameters in your routes, if you dont specify a expression the default is ([0-9]+):
+```php
+$router->addRoute('GET','/user/{id}', [Controller::class, 'home']);
+```
+You also can use regular expressions in your routes:
+```php
+$router->addRoute('GET','/user/{id:[0-9]+}', [Controller::class, 'home']);
+```
+Currently only class methods are supported for parameterized routes.
 ## license
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
