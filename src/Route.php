@@ -27,7 +27,11 @@ class Route
     private function buildPatternUrl(string $path): string
     {
         $path = str_replace('/', '\/', $path);
+        $matches = [];
         preg_match_all('/{(.+?)}/m', $path, $matches, PREG_SET_ORDER, 0);
+        if (empty($matches)) {
+            return '/' . $path . "$/";
+        }
         foreach ($matches as $match) {
             $identifier = explode(':', $match[1])[0];
             $regex = $this->getRegex($match[1] ?? null);
@@ -38,10 +42,11 @@ class Route
 
     private function getRegex(?string $match): string
     {
-        if ($match === null) {
+        $parsed = explode(':', $match);
+        if ($match === null || count($parsed) === 1) {
             return '([0-9]+)';
         }
-        $regex = explode(':', $match)[1];
+        $regex = $parsed[1];
         return $regex;
     }
 }
