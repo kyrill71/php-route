@@ -16,7 +16,7 @@ Ensure your ``composer.json file has the minimum-stability set to "dev":
 "minimum-stability": "dev"
 ```
 
-In your index.php file, include the following code is required for the package to work:
+In your index.php file, the following code is required for the package to work:
 ```php
 <?php
 require 'vendor/autoload.php';
