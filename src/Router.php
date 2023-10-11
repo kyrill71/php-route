@@ -8,8 +8,6 @@ use http\Env\Request;
 
 class Router
 {
-    private const DEFAULT_ROUTE_PATTERN = '([0-9]+)';
-
     public array $routes;
 
     public function addRoute(string $method, string $route, array|callable $action): self
@@ -26,14 +24,11 @@ class Router
         $matches = [];
         $url = null;
         foreach($this->routes as $url) {
-            if(preg_match($url->path, $route, $matches)) {
-                if($url->method === $method) {
-                    break;
-                }
-                
+            if ($url->method === $method && preg_match($url->path, $route, $matches)) {
+                break;
             }
         }
-       if (empty($matches)) {
+        if (empty($matches)) {
             return false;
         }
 
@@ -86,22 +81,19 @@ class Router
         if (!empty($namedKeys)) {
             $parameters = [];
 
-            foreach ($namedKeys as $paramName => $pattern) {
-                // Use $value from $parameterNames array
-                if ($value !== null && preg_match("/^$pattern$/", $value)) {
+            foreach ($namedKeys as $paramName => $value) {
+
+                if ($value !== null) {
                     $parameters[] = $value;
+
                 } else {
                     throw new \RuntimeException("Invalid parameter: $paramName");
                 }
             }
 
             call_user_func_array([$controller, $methodName], $parameters);
-    } else {
+        } else {
             $controller->$methodName();
         }
     }
-
-
-
-
 }
