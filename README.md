@@ -24,7 +24,7 @@ require 'vendor/autoload.php';
 ```
 
 #### In the file where you want to use the routing
-To use the file for route definitions, include the following code in your routering file:
+To utilize the file for route definitions, incorporate the following code into your routing file:
 ```php
 <?php
 use Kyrill\PhpRoute\Router;
