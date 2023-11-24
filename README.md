@@ -11,11 +11,6 @@ You can easily install the PHP Routing System using [Composer](https://getcompos
 
 ## Usage
 ### Basic setup
-Ensure your ``composer.json file has the minimum-stability set to "dev":
-```json
-"minimum-stability": "dev"
-```
-
 In your index.php file, the following code is required for the package to work:
 ```php
 <?php
@@ -67,5 +62,12 @@ You also can use regular expressions in your routes:
 $router->addRoute('GET','/user/{id:[0-9]+}', [Controller::class, 'home']);
 ```
 Currently only class methods are supported for parameterized routes.
+### Middleware
+You can add middlewares to the addRoute function. Middleware wil execute before the controller or (anonymous) function. Your middleware class needs to implement the `MiddlewareInterface`. Your interface needs to have the `handle` function, this is the function that is called by the router package. 
+When you did this you can add the middleware to your function like this:
+```php
+$router->addRoute('GET', '/home', [Controller::class, 'home'], [MiddlewareClass::class]);
+```
+
 ## license
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
