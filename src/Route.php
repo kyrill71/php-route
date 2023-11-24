@@ -12,16 +12,24 @@ class Route
 
     private $action;
 
-    public function __construct(string $method, string $path, array|callable $action)
+    private array $middlewares;
+
+    public function __construct(string $method, string $path, array|callable $action, array $middlewares = [])
     {
         $this->method = $method;
         $this->path = $this->buildPatternUrl($path);
         $this->action = $action;
+        $this->middlewares = $middlewares;
     }
 
     public function getAction(): array|callable
     {
         return $this->action;
+    }
+
+    public function getMiddlewares(): array
+    {
+        return $this->middlewares;
     }
 
     private function buildPatternUrl(string $path): string

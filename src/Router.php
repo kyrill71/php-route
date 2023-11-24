@@ -1,19 +1,17 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Kyrill\PhpRoute;
 
-use http\Env\Request;
+use Kyrill\PhpRoute\Exeptions\InvalidMiddlewareInterfaceException;
 
 class Router
 {
     public array $routes;
 
-    public function addRoute(string $method, string $route, array|callable $action): self
+    public function addRoute(string $method, string $route, array|callable $action, array $middleware = []): self
     {
-        $this->routes[$this->generateRouteName($method, $route)] = new Route($method, $route, $action);
-
+        $this->routes[$this->generateRouteName($method, $route)] = new Route($method, $route, $action, $middleware);
         return $this;
     }
 
@@ -23,13 +21,16 @@ class Router
         $method = $_SERVER['REQUEST_METHOD'];
         $matches = [];
         $url = null;
-        foreach($this->routes as $url) {
+        foreach ($this->routes as $url) {
             if ($url->method === $method && preg_match($url->path, $route, $matches)) {
                 break;
             }
         }
         if (empty($matches)) {
             return false;
+        }
+        if ($url->getMiddlewares() !== []) {
+            $this->handleMiddlewares($url);
         }
 
         if (is_callable($url->getAction())) {
@@ -45,6 +46,20 @@ class Router
         }
 
         return false;
+    }
+
+    /**
+     * @throws InvalidMiddlewareInterfaceException
+     */
+    private function handleMiddlewares(Route $route): void
+    {
+        foreach ($route->getMiddlewares() as $middleware) {
+            $middlewareObject = new $middleware();
+            if (!$middlewareObject instanceof MiddlewareInterface) {
+                throw new InvalidMiddlewareInterfaceException("Middleware must implement MiddlewareInterface");
+            }
+            $middlewareObject->handle();
+        }
     }
 
     private function handleCallable(Route $route): void
