@@ -63,7 +63,7 @@ $router->addRoute('GET','/user/{id:[0-9]+}', [Controller::class, 'home']);
 ```
 Currently only class methods are supported for parameterized routes.
 ### Middleware
-You can add middlewares to the addRoute function. Middleware wil execute before the controller or (anonymous) function. Your middleware class needs to implement the `MiddlewareInterface`. Your interface needs to have the `handle` function, this is the function that is called by the router package. 
+You can add middlewares to the addRoute function. Middleware wil execute before the controller or (anonymous) function. Your middleware class needs to implement the `MiddlewareInterface`. Your class needs to have the `handle` function, this is the function that is called by the router package. 
 When you did this you can add the middleware to your function like this:
 ```php
 $router->addRoute('GET', '/home', [Controller::class, 'home'], [MiddlewareClass::class]);
