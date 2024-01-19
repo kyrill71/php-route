@@ -32,6 +32,11 @@ class Router
         if ($url->getMiddlewares() !== []) {
             $this->handleMiddlewares($url);
         }
+        if (is_array($url->getAction())) {
+            $this->handleArray($url, $matches);
+
+            return true;
+        }
 
         if (is_callable($url->getAction())) {
             $this->handleCallable($url);
@@ -39,11 +44,7 @@ class Router
             return true;
         }
 
-        if (is_array($url->getAction())) {
-            $this->handleArray($url, $matches);
 
-            return true;
-        }
 
         return false;
     }
@@ -75,13 +76,16 @@ class Router
     private function handleArray(Route $route, array $matches): void
     {
         [$controllerName, $methodName] = $route->getAction();
-        if (!class_exists($controllerName)) {
-            throw new \RuntimeException("Controller $controllerName does not exist");
+        if(is_string($controllerName)) {
+            if (!class_exists($controllerName)) {
+                throw new \RuntimeException("Controller $controllerName does not exist");
+            }
+
+            if (!method_exists($controllerName, $methodName)) {
+                throw new \RuntimeException("Method $methodName does not exist in $controllerName");
+            }
         }
 
-        if (!method_exists($controllerName, $methodName)) {
-            throw new \RuntimeException("Method $methodName does not exist in $controllerName");
-        }
         $parameterNames = $matches ?? [];
         $namedKeys = [];
 
@@ -90,8 +94,12 @@ class Router
                 $namedKeys[$key] = $value;
             }
         }
-
-        $controller = new $controllerName();
+        if (is_string($controllerName)) {
+            $controller = new $controllerName();
+        }
+        else {
+            $controller = $controllerName;
+        }
 
         if (!empty($namedKeys)) {
             $parameters = [];
@@ -106,7 +114,7 @@ class Router
                 }
             }
 
-            call_user_func_array([$controller, $methodName], $parameters);
+            call_user_func_array([$controllerName, $methodName], $parameters);
         } else {
             $controller->$methodName();
         }
