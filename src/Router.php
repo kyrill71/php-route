@@ -88,14 +88,10 @@ class Router
             }
         }
 
-        $parameterNames = $matches ?? [];
-        $namedKeys = [];
+        $namedKeys = array_filter($matches, static function ($key) {
+            return is_string($key);
+        }, ARRAY_FILTER_USE_KEY);
 
-        foreach ($parameterNames as $key => $value) {
-            if (is_string($key)) {
-                $namedKeys[$key] = $value;
-            }
-        }
         if (is_string($controllerName)) {
             $controller = new $controllerName();
         } else {
