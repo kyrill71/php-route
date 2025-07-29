@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Kyrill\PhpRoute;
 
-use Kyrill\PhpRoute\Exeptions\InvalidMiddlewareInterfaceException;
+use Kyrill\PhpRoute\Exceptions\InvalidMiddlewareInterfaceException;
 
 class Router
 {
@@ -15,6 +16,9 @@ class Router
         return $this;
     }
 
+    /**
+     * @throws InvalidMiddlewareInterfaceException
+     */
     public function resolveRoute(): bool
     {
         $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -43,8 +47,6 @@ class Router
 
             return true;
         }
-
-
 
         return false;
     }
@@ -76,7 +78,7 @@ class Router
     private function handleArray(Route $route, array $matches): void
     {
         [$controllerName, $methodName] = $route->getAction();
-        if(is_string($controllerName)) {
+        if (is_string($controllerName)) {
             if (!class_exists($controllerName)) {
                 throw new \RuntimeException("Controller $controllerName does not exist");
             }
@@ -96,8 +98,7 @@ class Router
         }
         if (is_string($controllerName)) {
             $controller = new $controllerName();
-        }
-        else {
+        } else {
             $controller = $controllerName;
         }
 

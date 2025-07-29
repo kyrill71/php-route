@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Kyrill\PhpRoute\Exeptions;
+namespace Kyrill\PhpRoute\Exceptions;
 
-Class InvalidMiddlewareInterfaceException extends \Exception
+class InvalidMiddlewareInterfaceException extends \Exception
 {
-
 }
