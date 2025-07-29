@@ -53,7 +53,7 @@ $router->addRoute('GET','/anonymousfunction', function () {
 ```
 In these examples, we use the GET method, but you can use any HTTP method you need for your routes.
 
-You can also use parameters in your routes, if you dont specify a expression the default is ([0-9]+):
+You can also use parameters in your routes, if you don't specify an expression the default is ([0-9]+):
 ```php
 $router->addRoute('GET','/user/{id}', [Controller::class, 'home']);
 ```
